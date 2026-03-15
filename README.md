@@ -1,97 +1,149 @@
-# Strategy Pattern Implementation in C#
+# Strategy Pattern -- C# Example
 
 ## Overview
-This project demonstrates the **Strategy Pattern**, a behavioral design pattern that enables selecting an algorithm's behavior at runtime. The example focuses on a **Payment Processing System** where different payment methods (Credit Card, PayPal, Crypto) can be dynamically selected.
+
+This small project demonstrates the **Strategy Pattern**, which is one
+of the classic object‑oriented design patterns.\
+The idea behind the pattern is that different algorithms or behaviors
+can be encapsulated in separate classes and then selected dynamically at
+runtime.
+
+In this example the pattern is used to implement a **simple payment
+processing system**.\
+Different payment methods (credit card, PayPal and crypto) are
+implemented as separate strategy classes. The main processor class
+simply uses whichever strategy has been selected.
+
+The goal of the project is mainly educational: to show how the pattern
+works in practice in a clear and simple way.
+
+------------------------------------------------------------------------
 
 ## Project Structure
 
+    PaymentProcessor/
+    ├── IPaymentStrategy.cs
+    ├── CreditCardPayment.cs
+    ├── PayPalPayment.cs
+    ├── CryptoPayment.cs
+    ├── PaymentProcessor.cs
+    └── Program.cs
+
+**Short description of the files:**
+
+-   **IPaymentStrategy.cs** -- Interface that defines the common method
+    used by all strategies.
+-   **CreditCardPayment.cs** -- Strategy implementation for credit card
+    payments.
+-   **PayPalPayment.cs** -- Strategy implementation for PayPal payments.
+-   **CryptoPayment.cs** -- Strategy implementation for cryptocurrency
+    payments.
+-   **PaymentProcessor.cs** -- The context class that uses a selected
+    strategy.
+-   **Program.cs** -- Example program that demonstrates how strategies
+    are switched.
+
+------------------------------------------------------------------------
+
+## How the Strategy Pattern Appears in This Project
+
+### Strategy Interface
+
+`IPaymentStrategy` defines the method that every payment strategy must
+implement.
+
+``` csharp
+void ProcessPayment(double amount);
 ```
-PaymentProcessor/
-├── IPaymentStrategy.cs      # Strategy Interface
-├── CreditCardPayment.cs    # Concrete Strategy: Credit Card
-├── PayPalPayment.cs        # Concrete Strategy: PayPal
-├── CryptoPayment.cs        # Concrete Strategy: Crypto
-├── PaymentProcessor.cs     # Context Class
-└── Program.cs              # Client Code
-```
 
-## Key Components
+This allows the processor to use any payment method through the same
+interface.
 
-### 1. Strategy Interface (`IPaymentStrategy`)
-- Defines the common interface for all payment strategies.
-- Ensures that all concrete strategies implement the `ProcessPayment` method.
+### Concrete Strategies
 
-### 2. Concrete Strategies
-- **CreditCardPayment**: Implements payment logic for credit card transactions.
-- **PayPalPayment**: Implements payment logic for PayPal transactions.
-- **CryptoPayment**: Implements payment logic for cryptocurrency transactions.
+Each payment type is implemented as its own class:
 
-### 3. Context Class (`PaymentProcessor`)
-- Holds a reference to a strategy object.
-- Delegates the payment processing to the selected strategy.
-- Allows dynamic switching of strategies at runtime.
+-   `CreditCardPayment`
+-   `PayPalPayment`
+-   `CryptoPayment`
 
-### 4. Client Code (`Program`)
-- Demonstrates how to use the Strategy Pattern.
-- Shows dynamic switching between different payment methods.
+Each class implements the `IPaymentStrategy` interface and provides its
+own version of `ProcessPayment()`.
 
-## How to Run
+### Context Class
 
-1. **Compile the Code**:
-   ```bash
-   csc Program.cs PaymentProcessor.cs CreditCardPayment.cs PayPalPayment.cs CryptoPayment.cs IPaymentStrategy.cs
-   ```
+`PaymentProcessor` works as the **context**.
 
-2. **Run the Executable**:
-   ```bash
-   ./Program.exe
-   ```
+It stores a reference to a strategy object and calls it when a payment
+needs to be processed.\
+Because the processor only knows about the interface, the actual
+implementation can be swapped at runtime.
+
+### Client Code
+
+The `Program` class demonstrates how the strategies are used.\
+It creates the processor and changes the strategy before executing
+different payments.
+
+------------------------------------------------------------------------
+
+## Running the Program
+
+### Option A -- Using VS Code / .NET CLI
+
+    dotnet run
+
+### Option B -- Compile Manually
+
+Compile the files:
+
+    csc Program.cs PaymentProcessor.cs CreditCardPayment.cs PayPalPayment.cs CryptoPayment.cs IPaymentStrategy.cs
+
+Run the program:
+
+    ./Program.exe
+
+------------------------------------------------------------------------
 
 ## Expected Output
 
-```
-Processing credit card payment of $100.00
-Processing PayPal payment of $50.00
-Processing crypto payment of $200.00
-```
+    Processing credit card payment of $100.00
+    Processing PayPal payment of $50.00
+    Processing crypto payment of $200.00
 
-## Benefits of the Strategy Pattern
+------------------------------------------------------------------------
 
-- **Flexibility**: Easily add new payment methods without modifying existing code.
-- **Maintainability**: Each payment method is encapsulated in its own class.
-- **Runtime Switching**: Change payment methods dynamically during execution.
+## Why Use the Strategy Pattern?
 
-## Finnish Explanation (Suomenkielinen selitys)
+Some advantages of this design pattern:
 
-### Strategiakuvio
-Strategiakuvio on käyttäytymiseen liittyvä suunnittelumalli, joka mahdollistaa algoritmin valinnan suorituksen aikana. Tämä esimerkki keskittyy **maksujärjestelmään**, jossa eri maksutavat (luottokortti, PayPal, kryptovaluutta) voidaan valita dynaamisesti.
+**Flexibility**\
+New payment methods can be added by simply creating another strategy
+class.
 
-### Tärkeimmät osat
+**Maintainability**\
+Each payment method has its own class, which keeps the code easier to
+read and maintain.
 
-1. **Strategia-rajapinta (`IPaymentStrategy`)**
-   - Määrittelee yhteisen rajapinnan kaikille maksustrategioille.
-   - Varmistaa, että kaikki konkreettiset strategiat toteuttavat `ProcessPayment`-metodin.
+**Runtime switching**\
+The strategy can be changed while the program is running.
 
-2. **Konkreettiset strategiat**
-   - **CreditCardPayment**: Toteuttaa luottokorttimaksun logiikan.
-   - **PayPalPayment**: Toteuttaa PayPal-maksun logiikan.
-   - **CryptoPayment**: Toteuttaa kryptomaksun logiikan.
+------------------------------------------------------------------------
 
-3. **Kontekstiluokka (`PaymentProcessor`)**
-   - Pitää sisällään viitteen strategiaolioon.
-   - Delegoi maksun käsittelyn valitulle strategialle.
-   - Mahdollistaa strategian vaihtamisen suorituksen aikana.
+## Short Finnish Explanation
 
-4. **Asiakaskoodi (`Program`)**
-   - Näyttää, miten strategiakuviota käytetään.
-   - Esittelee dynaamisen vaihtamisen eri maksutapojen välillä.
+Strategiakuvio on olio‑ohjelmoinnin suunnittelumalli, jossa erilaiset
+toteutukset kapseloidaan erillisiin luokkiin ja niitä käytetään yhteisen
+rajapinnan kautta.
 
-### Hyödyt
+Tässä projektissa maksutavat toimivat strategioina.\
+`PaymentProcessor` ei tiedä tarkalleen miten maksut käsitellään -- se
+vain kutsuu rajapinnan metodia. Näin maksutapaa voidaan vaihtaa helposti
+ohjelman aikana.
 
-- **Joustavuus**: Uusia maksutapoja on helppo lisätä ilman, että olemassa olevaa koodia tarvitsee muuttaa.
-- **Ylläpidettävyys**: Jokainen maksutapa on kapseloitu omaan luokkaansa.
-- **Dynaaminen vaihtaminen**: Maksutapoja voidaan vaihtaa suorituksen aikana.
+------------------------------------------------------------------------
 
 ## License
 
-This project is licensed under the MIT License. Feel free to use and modify it for educational purposes.
+This project uses the **MIT License** and is mainly intended for
+educational use.
