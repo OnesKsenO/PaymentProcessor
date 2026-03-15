@@ -72,8 +72,6 @@ own version of `ProcessPayment()`.
 
 ### Context Class
 
-`PaymentProcessor` works as the **context**.
-
 It stores a reference to a strategy object and calls it when a payment
 needs to be processed.\
 Because the processor only knows about the interface, the actual
