@@ -37,6 +37,10 @@ PaymentProcessor/
 
 ## How to Run
 
+A. VSCODE
+1. dotnet run
+
+B. COMPILING
 1. **Compile the Code**:
    ```bash
    csc Program.cs PaymentProcessor.cs CreditCardPayment.cs PayPalPayment.cs CryptoPayment.cs IPaymentStrategy.cs
